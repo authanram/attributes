@@ -12,6 +12,16 @@ class Attributes
     {
         $reflection = new ReflectionClass($context);
 
+        $classAttributes = $reflection->getAttributes();
+
+        foreach ($classAttributes as $classAttribute) {
+            $instance = $classAttribute->newInstance();
+
+            if (method_exists($instance, 'handle')) {
+                $instance->handle($context, ...$args);
+            }
+        }
+
         $properties = $reflection->getProperties();
 
         foreach ($properties as $property) {
